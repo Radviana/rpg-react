@@ -64,7 +64,7 @@ const App = () => {
 
   const resultado = async () => {
     await rpg.methods.Dado(faces);
-    const result = rpg.methods.Dado;
+    const result = rpg.methods.Dado.resultado;
     // Recarrega dados da página
     await carregarDados();
     // Altera mensagem
