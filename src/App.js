@@ -12,6 +12,7 @@ const App = () => {
   const [value, setValue] = useState("");
   const [mensagem, setMensagem] = useState("");
   const [faces, setFaces] = useState("");
+  const [valor_sorteado, setValor_Sorteado] = useState();
 
   // Função assincrona que carrega os dados do contrato
   const carregarDados = async () => {
@@ -51,6 +52,7 @@ const App = () => {
       await carregarDados();
       // Altera mensagem
       setMensagem("Dado Sorteado!");
+      setValor_Sorteado(rpg.methods.Mostra_Resultado().resultado);
     } catch (error) {
       // Caso o usuário cancele a solicitação no metamask
       if (error.code === 4001) {
@@ -62,14 +64,6 @@ const App = () => {
     }
   };
 
-  const resultado = async () => {
-    await rpg.methods.Dado(faces);
-    const result = rpg.methods.Dado.resultado;
-    // Recarrega dados da página
-    await carregarDados();
-    // Altera mensagem
-    setMensagem(console.log(result));
-  };
   return (
     <div>
       <h2>Contrato de RPG</h2>
@@ -97,13 +91,12 @@ const App = () => {
       </form>
       <hr />
       <h4>Rolar dados? </h4>
-      <button onClick={sortear}> Sortear</button>
+      <button onClick={sortear}> Rolar Dado</button>
       <br />
-      <br />
-      <button onClick={resultado}> Mostrar Resultado</button>
       <hr />
       {/* Mostra mensagem ao usuário */}
       <h1>{mensagem}</h1>
+      <h2>{valor_sorteado}</h2>
     </div>
   );
 };
