@@ -29,6 +29,7 @@ const App = () => {
     setSaldo(_saldo);
     setValue("");
     setFaces("");
+    setValor_Sorteado("");
   };
   // Antes da página carregar ele chama seu conteúdo
   useEffect(() => {
@@ -48,11 +49,13 @@ const App = () => {
         value: web3.utils.toWei(value, "ether"),
         faces: faces,
       });
+      const resultado = rpg.methods.Mostra_Resultado();
       // Recarrega dados da página
       await carregarDados();
       // Altera mensagem
-      setMensagem("Dado Sorteado!");
-      setValor_Sorteado(rpg.methods.Mostra_Resultado().resultado);
+      setMensagem("Dado Sorteado! Resultado: ");
+      setValor_Sorteado(resultado);
+      //setValor_Sorteado(rpg.methods.Mostra_Resultado().resultado);
     } catch (error) {
       // Caso o usuário cancele a solicitação no metamask
       if (error.code === 4001) {
@@ -79,24 +82,13 @@ const App = () => {
             onChange={(event) => setValue(event.target.value)}
           />
           <br />
-          <br />
-          <label>Quantidade de faces do dado a ser sorteado: </label>
-          <input
-            faces={faces}
-            // Altera a quantidade de faces
-            onChange={(event) => setFaces(event.target.faces)}
-          />
         </div>
         <br />
       </form>
-      <hr />
-      <h4>Rolar dados? </h4>
       <button onClick={sortear}> Rolar Dado</button>
       <br />
-      <hr />
       {/* Mostra mensagem ao usuário */}
-      <h1>{mensagem}</h1>
-      <h2>{valor_sorteado}</h2>
+      <h1>{mensagem} {valor_sorteado}</h1>
     </div>
   );
 };
