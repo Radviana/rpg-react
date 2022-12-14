@@ -12,7 +12,6 @@ const App = () => {
   const [value, setValue] = useState("");
   const [mensagem, setMensagem] = useState("");
   const [faces, setFaces] = useState("");
-  const [valor_sorteado, setValor_Sorteado] = useState();
 
   // Função assincrona que carrega os dados do contrato
   const carregarDados = async () => {
@@ -29,7 +28,6 @@ const App = () => {
     setSaldo(_saldo);
     setValue("");
     setFaces("");
-    setValor_Sorteado("");
   };
   // Antes da página carregar ele chama seu conteúdo
   useEffect(() => {
@@ -43,19 +41,17 @@ const App = () => {
       //event.preventDefault;
       setMensagem("Aguardando processamento...");
       const contas = await web3.eth.getAccounts();
-      const faces = 100;
+      const faces = 1000;
       await rpg.methods.Dado(faces).send({
         from: contas[0],
         value: web3.utils.toWei(value, "ether"),
         faces: faces,
       });
-      const resultado = rpg.methods.Mostra_Resultado();
+      const resultado_dado = await rpg.methods.Mostra_Resultado().call();
       // Recarrega dados da página
       await carregarDados();
       // Altera mensagem
-      setMensagem("Dado Sorteado! Resultado: ");
-      setValor_Sorteado(resultado);
-      //setValor_Sorteado(rpg.methods.Mostra_Resultado().resultado);
+      setMensagem("Dado Sorteado! Resultado: " + resultado_dado);
     } catch (error) {
       // Caso o usuário cancele a solicitação no metamask
       if (error.code === 4001) {
@@ -88,7 +84,7 @@ const App = () => {
       <button onClick={sortear}> Rolar Dado</button>
       <br />
       {/* Mostra mensagem ao usuário */}
-      <h1>{mensagem} {valor_sorteado}</h1>
+      <h1>{mensagem}</h1>
     </div>
   );
 };
